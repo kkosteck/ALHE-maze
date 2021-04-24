@@ -9,8 +9,13 @@ python -m pip install anytree
 ```
 
 ## Generowanie labiryntów:
-Randomized Kruskal's Algorithm:
+Zrandomizowany algorytm Kruskala:
 - wygenerowanie wierzchołków indeksowanych numerycznie oraz krawędzi między każdym wierzchołkiem
 - lista krawędzi zostaje przetasowana, dzięki czemu otrzymuje za każdym razem losowy labirynt
 - na podstawie wylosowanych krawędzi sprawdzamy, czy dwa wierzchołki należą do tego samego drzewa, jeśli nie to pierwszy wierzchołek zostaje rodzicem drugiego
 - labirynt jest przedstawiony jako tablica dwuwymiarowa
+## Rozwiązywanie labiryntów:
+Algorytm A*:
+- to-do
+## Wizualizacja: 
+- to-do
