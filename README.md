@@ -7,6 +7,10 @@
 python -m pip install matplotlib
 python -m pip install anytree
 ```
+## Uruchomienie:
+```
+python main.py
+```
 # Implementacja:
 ## Generowanie labiryntów - zrandomizowany algorytm Kruskala:
 - wygenerowanie wierzchołków indeksowanych numerycznie oraz krawędzi między każdym wierzchołkiem
