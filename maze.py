@@ -1,0 +1,104 @@
+from anytree import AnyNode, RenderTree
+import matplotlib.pyplot as plt
+import random
+
+
+class Maze:
+    def __init__(self, n, m, visualisation=False):
+        self.n = int(n / 2)
+        self.m = int(m / 2)
+        self.vis = visualisation
+
+        self.nodes = self.__create_nodes()
+        self.edges = self.__create_edges()
+        self.data = self.generate()
+
+    def __create_nodes(self):
+        nodes = []
+        for i in range(self.n):
+            for j in range(self.m):
+                nodes.append(AnyNode(id=i*self.m+j))
+        return nodes
+
+    def __create_edges(self):
+        edges = []
+        for i in range(self.n):
+            for j in range(self.m):
+                if j != self.m-1:
+                    edges.append((i*self.m+j, i*self.m+j+1))
+                if i != self.n-1:
+                    edges.append((i*self.m+j, (i+1)*self.m+j))
+        random.shuffle(edges)
+        return edges
+
+    def generate(self):
+        maze = [[0]*(2*self.m+1) for x in range(2*self.n+1)]
+
+        edges_temp = self.edges.copy()
+
+        while(edges_temp):
+            if self.vis:
+                plt.cla()
+                plt.imshow(maze)
+                plt.pause(1e-2)
+
+            id_1 = edges_temp[-1][0]
+            id_2 = edges_temp[-1][1]
+            node_1 = next(x for x in self.nodes if x.id==id_1)
+            node_2 = next(x for x in self.nodes if x.id==id_2)
+
+            for node in node_1.iter_path_reverse():
+                if node.is_root:
+                    node_1 = node
+                    break
+            for node in node_2.iter_path_reverse():
+                if node.is_root:
+                    node_2 = node
+                    break
+
+            if node_1.id == node_2.id:
+                x, y = self.__getCords(id_1, id_2)
+                maze[y+1][x+1] = 1
+            else:
+                if self.vis:
+                    maze = self.__fillCorners(id_1, id_2, maze)
+                temp = list(node_1.children)
+                temp.append(node_2)
+                node_1.children = temp
+            edges_temp.pop()
+        
+        for i in range(2*self.n+1):
+            for j in range(2*self.m+1):
+                if i == 0 or i == 2*self.n or j == 0 or j == 2*self.m or (i%2 == 0 and j%2 == 0):
+                    maze[i][j] = 1
+
+        if self.vis:
+            plt.imshow(maze)
+            plt.show()
+
+        return maze
+
+    def __getCords(self, id_1, id_2):
+        if id_2 - id_1 == 1: # vertical edge
+            x = (id_1%self.m)*2+1
+            y = int(id_1/self.m) * 2
+        else: # horizontal edge
+            x = (id_1%self.m) * 2
+            y = int(id_1/self.m)*2 + 1
+        return x, y
+
+    def __fillCorners(self,id_1, id_2, maze):
+        x = lambda a: a%self.m*2 + 1
+        y = lambda a: int(a/self.m)*2 + 1
+
+        maze[y(id_1)-1][x(id_1)-1] = 1
+        maze[y(id_1)+1][x(id_1)-1] = 1
+        maze[y(id_1)-1][x(id_1)+1] = 1
+        maze[y(id_1)+1][x(id_1)+1] = 1
+        
+        maze[y(id_2)-1][x(id_1)-1] = 1
+        maze[y(id_2)+1][x(id_1)-1] = 1
+        maze[y(id_2)-1][x(id_1)+1] = 1
+        maze[y(id_2)+1][x(id_1)+1] = 1
+
+        return maze
