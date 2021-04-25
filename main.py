@@ -2,9 +2,9 @@ from Maze import *
 from Path import *
 
 def main():
-    visualisation = False
-    n = 100
-    m = 100
+    visualisation = True
+    n = 10
+    m = 10
     maze = Maze(n, m, visualisation=visualisation)
     # maze.show()
 

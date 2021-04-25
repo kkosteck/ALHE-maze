@@ -17,7 +17,7 @@ class Maze:
         self.edges = self.__create_edges() # generate edges of nodes
         if init:
             self.generate() # generate maze data
-            self.__update_visual()
+            self.__update_visual(True)
         else:
             self.data = []
 

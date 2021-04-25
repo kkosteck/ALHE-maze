@@ -14,6 +14,7 @@ class Path:
             self.search()
             if self.vis:
                 self.__update_visual()
+                self.__clean()
         else:
             self.path = None
 
@@ -27,11 +28,11 @@ class Path:
             current_n = open_n[self.__find_min(open_n)] # current visited tile
             del open_n[self.__get_id(current_n, open_n)] # delete current tile from waiting list
             closed_n.append(current_n) # add current tile to already checked
-            self.__update_visual(rt=True,value=[current_n,2], clean=False)
+            self.__update_visual(rt=True,value=[current_n,2])
 
             if(current_n.x == self.end[0] and current_n.y == self.end[1]): # check if we reached end of path
                 self.path = current_n
-                self.__update_visual(rt=True,value=[current_n,4], clean=False, found=True)
+                self.__update_visual(rt=True,value=[current_n,4], found=True)
                 break
             
             neighbours = self.__find_neighbours(current_n) # find all neighbours of current tile
@@ -45,7 +46,7 @@ class Path:
                     if index is None: # tile is not in open list
                         open_n.append(n) # add to open list
                         index = -1 # set index for this tile
-                        self.__update_visual(rt=True,value=[n,3], clean=False)
+                        self.__update_visual(rt=True,value=[n,3])
                     open_n[index].parent = current_n # make current parent of this neighbour
                     open_n[index].f_c = n.f_c # update cost function
 
@@ -99,7 +100,7 @@ class Path:
                 return i
         return None
 
-    def __update_visual(self, rt=False, value=None, found=False, clean=True):
+    def __update_visual(self, rt=False, value=None, found=False):
         if found:
             while(not value[0].is_root):
                 self.maze[value[0].y][value[0].x] = value[1]
@@ -112,3 +113,11 @@ class Path:
 
     def show(self):
         visualisation.show_plot(self.maze)
+
+    def __clean(self):
+        for i, _ in enumerate(self.maze):
+            for j, _ in enumerate(self.maze[i]):
+                if self.maze[i][j] == 2 or self.maze[i][j] == 3:
+                    self.maze[i][j] = 0
+        self.maze[self.start[1]][self.start[0]] = 3
+        self.maze[self.end[1]][self.end[0]] = 3
