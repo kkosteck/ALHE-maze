@@ -1,6 +1,7 @@
 from anytree import AnyNode, RenderTree
 import matplotlib.pyplot as plt
 import random
+import visualisation
 
 # Randomized Kruskal's algorithm implementation
 
@@ -15,7 +16,8 @@ class Maze:
         self.nodes = self.__create_nodes() # generate tree nodes for every walkable tile
         self.edges = self.__create_edges() # generate edges of nodes
         if init:
-            self.data = self.generate() # generate maze data
+            self.generate() # generate maze data
+            self.__update_visual()
         else:
             self.data = []
 
@@ -39,36 +41,29 @@ class Maze:
 
     # maze generation
     def generate(self):
-        maze = [[0]*(2*self.m+1) for x in range(2*self.n+1)] # generate maze array with zeros
+        self.data = [[0]*(2*self.m+1) for x in range(2*self.n+1)] # generate maze array with zeros
 
         edges_temp = self.edges.copy() # copy edge list - edges are popped from list so we have to copy it to have it saved
 
         while(edges_temp):
-            if self.vis: # real time visualisation
-                plt.cla()
-                plt.imshow(maze)
-                plt.pause(1e-2)
+            self.__update_visual(True)
 
             id_1 = edges_temp[-1][0] # id of first node
             id_2 = edges_temp[-1][1] # id of second node
             node_1 = next(x for x in self.nodes if x.id==id_1) # search for first node variable
             node_2 = next(x for x in self.nodes if x.id==id_2) # search for second node variable
 
-            for node in node_1.iter_path_reverse(): # find root of first node
-                if node.is_root:
-                    node_1 = node
-                    break
-            for node in node_2.iter_path_reverse(): # find root of second node
-                if node.is_root:
-                    node_2 = node
-                    break
+            if not node_1.is_root:
+                node_1 = node_1.ancestors[0] # root of first node
+            if not node_2.is_root:
+                node_2 = node_2.ancestors[0] # root of second node
 
             if node_1.id == node_2.id: # check if nodes are in same tree
                 x, y = self.__getCords(id_1, id_2)
-                maze[y+1][x+1] = 1 # nodes are connected, so we save this edge
+                self.data[y+1][x+1] = 1 # nodes are connected, so we save this edge
             else: # nodes are not connected, because we assigned 0 values before we do not change any maze value
                 if self.vis: # for some action in visualisation
-                    maze = self.__fillCorners(id_1, id_2, maze)
+                    self.__fillCorners(id_1, id_2)
                 temp = list(node_1.children) # save first node children
                 temp.append(node_2) # add second node as first node's child
                 node_1.children = temp 
@@ -77,13 +72,7 @@ class Maze:
         for i in range(2*self.n+1): # fill bouding box and corners
             for j in range(2*self.m+1):
                 if i == 0 or i == 2*self.n or j == 0 or j == 2*self.m or (i%2 == 0 and j%2 == 0):
-                    maze[i][j] = 1
-
-        if self.vis: # show final maze
-            plt.imshow(maze)
-            plt.show()
-
-        return maze
+                    self.data[i][j] = 1
 
     # finding cordinates of edge between two nodes in maze array
     def __getCords(self, id_1, id_2):
@@ -96,22 +85,24 @@ class Maze:
         return x, y
 
     # fill corners - only for visualisation
-    def __fillCorners(self,id_1, id_2, maze):
+    def __fillCorners(self,id_1, id_2):
         x = lambda a: a%self.m*2 + 1
         y = lambda a: int(a/self.m)*2 + 1
 
-        maze[y(id_1)-1][x(id_1)-1] = 1
-        maze[y(id_1)+1][x(id_1)-1] = 1
-        maze[y(id_1)-1][x(id_1)+1] = 1
-        maze[y(id_1)+1][x(id_1)+1] = 1
+        self.data[y(id_1)-1][x(id_1)-1] = 1
+        self.data[y(id_1)+1][x(id_1)-1] = 1
+        self.data[y(id_1)-1][x(id_1)+1] = 1
+        self.data[y(id_1)+1][x(id_1)+1] = 1
         
-        maze[y(id_2)-1][x(id_1)-1] = 1
-        maze[y(id_2)+1][x(id_1)-1] = 1
-        maze[y(id_2)-1][x(id_1)+1] = 1
-        maze[y(id_2)+1][x(id_1)+1] = 1
+        self.data[y(id_2)-1][x(id_1)-1] = 1
+        self.data[y(id_2)+1][x(id_1)-1] = 1
+        self.data[y(id_2)-1][x(id_1)+1] = 1
+        self.data[y(id_2)+1][x(id_1)+1] = 1
 
-        return maze
+
+    def __update_visual(self, rt=False):
+        if self.vis:
+            visualisation.show_plot(self.data, rt)
 
     def show(self):
-        plt.imshow(self.data)
-        plt.show()
+        visualisation.show_plot(self.data)
