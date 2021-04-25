@@ -19,5 +19,7 @@ python main.py
 - labirynt jest przedstawiony jako tablica dwuwymiarowa
 ## Rozwiązywanie labiryntów - Algorytm A*:
 - to-do
-## Wizualizacja - matplotlib: 
-- to-do
+## Wizualizacja - matplotlib:
+Generacja labiryntu:
+
+![Alt Text](https://media.giphy.com/media/K4iuSBYOHYJI6qWEFO/giphy.gif)
