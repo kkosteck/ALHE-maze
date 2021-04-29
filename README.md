@@ -19,7 +19,6 @@ python main.py
 - labirynt jest przedstawiony jako tablica dwuwymiarowa
 ## Rozwiązywanie labiryntów - Algorytm A*:
 - to-do
-## Wizualizacja - matplotlib:
-Generacja labiryntu:
+## Wizualizacja - pygame:
 
 ![Alt Text](https://github.com/kkosteck/ALHE-maze/blob/pygame_visual/maze.gif)
