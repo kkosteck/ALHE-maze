@@ -22,4 +22,4 @@ python main.py
 ## Wizualizacja - matplotlib:
 Generacja labiryntu:
 
-![Alt Text](https://media.giphy.com/media/K4iuSBYOHYJI6qWEFO/giphy.gif)
+![Alt Text](https://github.com/kkosteck/ALHE-maze/blob/pygame_visual/maze.gif)
