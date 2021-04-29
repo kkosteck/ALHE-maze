@@ -1,6 +1,5 @@
 from anytree import AnyNode, RenderTree
-import matplotlib.pyplot as plt
-import visualisation
+from Visual import *
 
 class Path:
     def __init__(self, maze, start, end, visualisation=False, init=True):
@@ -9,12 +8,15 @@ class Path:
         self.m = len(maze[0]) # width of maze
         self.start = start # starting point coordinates (x,y) 
         self.end = end # end point coordinates (x,y)
-        self.vis = visualisation
+        if visualisation:
+            self.visual = Visual(self.n, self.m)
+            self.visual.draw_maze(self.maze)
+        else:
+            self.visual = None
         if init:
             self.search()
-            if self.vis:
-                self.__update_visual()
-                self.__clean()
+            # if visualisation:
+            #     self.__clean()
         else:
             self.path = None
 
@@ -28,11 +30,11 @@ class Path:
             current_n = open_n[self.__find_min(open_n)] # current visited tile
             del open_n[self.__get_id(current_n, open_n)] # delete current tile from waiting list
             closed_n.append(current_n) # add current tile to already checked
-            self.__update_visual(rt=True,value=[current_n,2])
+            self.__update_visual(current_n.x, current_n.y, 2)
 
             if(current_n.x == self.end[0] and current_n.y == self.end[1]): # check if we reached end of path
                 self.path = current_n
-                self.__update_visual(rt=True,value=[current_n,4], found=True)
+                self.__update_visual_path(current_n)
                 break
             
             neighbours = self.__find_neighbours(current_n) # find all neighbours of current tile
@@ -46,7 +48,7 @@ class Path:
                     if index is None: # tile is not in open list
                         open_n.append(n) # add to open list
                         index = -1 # set index for this tile
-                        self.__update_visual(rt=True,value=[n,3])
+                        self.__update_visual(n.x,n.y,3)
                     open_n[index].parent = current_n # make current parent of this neighbour
                     open_n[index].f_c = n.f_c # update cost function
 
@@ -100,19 +102,29 @@ class Path:
                 return i
         return None
 
-    def __update_visual(self, rt=False, value=None, found=False):
-        if found:
-            while(not value[0].is_root):
-                self.maze[value[0].y][value[0].x] = value[1]
-                value[0] = value[0].parent
-            self.maze[value[0].y][value[0].x] = value[1] # root value
-        if self.vis:
-            if value is not None:
-                self.maze[value[0].y][value[0].x] = value[1]
-            visualisation.show_plot(self.maze, rt)
+    def __update_visual_path(self, node):
+        self.maze[node.y][node.x] = 4
+        if self.visual is not None:
+            self.visual.draw_cell(node.x,node.y,BLUE)
+        while(not node.is_root):
+            self.maze[node.y][node.x] = 4
+            node = node.parent
+            if self.visual is not None:
+                self.visual.draw_cell(node.x,node.y,BLUE)
+        self.maze[node.y][node.x] = 4 # root value
+
+
+    def __update_visual(self, x, y, value):
+        if value == 2:
+            color = GREEN
+        elif value == 3:
+            color = RED
+        self.maze[y][x] = value
+        if self.visual is not None:
+            self.visual.draw_cell(x,y,color)
 
     def show(self):
-        visualisation.show_plot(self.maze)
+        self.visual.show(self.maze)
 
     def __clean(self):
         for i, _ in enumerate(self.maze):
