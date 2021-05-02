@@ -37,7 +37,7 @@ class Maze:
                     edges.append((i*self.m+j, i*self.m+j+1)) # vertical edge
                 if i != self.n-1:
                     edges.append((i*self.m+j, (i+1)*self.m+j)) # horizontal edge 
-        random.shuffle(edges) # randomized list of edges
+        # random.shuffle(edges) # randomized list of edges
         return edges
 
     # maze generation
@@ -47,7 +47,7 @@ class Maze:
             self.visual.draw_maze(self.data)
 
         edges_temp = self.edges.copy() # copy edge list - edges are popped from list so we have to copy it to have it saved
-
+        random.shuffle(edges_temp)
         while(edges_temp):
 
             id_1 = edges_temp[-1][0] # id of first node
@@ -59,7 +59,6 @@ class Maze:
                 node_1 = node_1.ancestors[0] # root of first node
             if not node_2.is_root:
                 node_2 = node_2.ancestors[0] # root of second node
-
             if node_1.id == node_2.id: # check if nodes are in same tree
                 x, y = self.__getCords(id_1, id_2)
                 self.data[y+1][x+1] = 1 # nodes are connected, so we save this edge
@@ -118,4 +117,14 @@ class Maze:
                 self.visual.draw_cell(i[0],i[1],BLACK)
 
     def show(self):
-        self.visual.show(self.data)
+        if self.visual is not None:
+            self.visual.show(self.data)
+        else:
+            self.visual = Visual(2*self.n+1, 2*self.m+1)
+            self.visual.show(self.data)
+            self.visual = None
+
+    def clean_nodes(self):
+        for i in range(self.n):
+            for j in range(self.m):
+                self.nodes[i*self.m+j].parent = None

@@ -1,13 +1,16 @@
 from anytree import AnyNode, RenderTree
+from collections import Counter
+import math
 from Visual import *
 
 class Path:
-    def __init__(self, maze, start, end, visualisation=False, init=True):
+    def __init__(self, maze, start, end, visualisation=False, init=True, heuristic_type=0):
         self.maze = maze # data with walkable tiles and walls maze[n][m] <-> maze[y][x]
         self.n = len(maze) # height of maze
         self.m = len(maze[0]) # width of maze
         self.start = start # starting point coordinates (x,y) 
         self.end = end # end point coordinates (x,y)
+        self.h_type = heuristic_type # choose which heuristic to use
         if visualisation:
             self.visual = Visual(self.n, self.m)
             self.visual.draw_maze(self.maze)
@@ -15,8 +18,6 @@ class Path:
             self.visual = None
         if init:
             self.search()
-            # if visualisation:
-            #     self.__clean()
         else:
             self.path = None
 
@@ -53,7 +54,16 @@ class Path:
                     open_n[index].f_c = n.f_c # update cost function
 
     def __heuristic(self, x, y): # calculate heuristic value
-        return abs(x - self.end[0]) + abs(y - self.end[1])
+        if self.h_type == 0:
+            return abs(x - self.end[0]) + abs(y - self.end[1])
+        elif self.h_type == 1:
+            return math.sqrt((x - self.end[0])**2 + (y - self.end[1])**2)
+        elif self.h_type == 2:
+            if self.n > self.m:
+                return abs(y - self.end[1])
+            else:
+                return abs(y - self.end[1])
+        return 0 
 
     def __find_min(self, data): # find minimum function value in open list
         f_min = self.n + self.m + 1
@@ -124,12 +134,22 @@ class Path:
             self.visual.draw_cell(x,y,color)
 
     def show(self):
-        self.visual.show(self.maze)
+        if self.visual is not None:
+            self.visual.show(self.maze)
+        else:
+            self.visual = Visual(self.n, self.m)
+            self.visual.show(self.maze)
+            self.visual = None
 
-    def __clean(self):
+
+    def clean(self):
         for i, _ in enumerate(self.maze):
             for j, _ in enumerate(self.maze[i]):
                 if self.maze[i][j] == 2 or self.maze[i][j] == 3:
                     self.maze[i][j] = 0
-        self.maze[self.start[1]][self.start[0]] = 3
-        self.maze[self.end[1]][self.end[0]] = 3
+        self.maze[self.start[1]][self.start[0]] = 0
+        self.maze[self.end[1]][self.end[0]] = 0
+
+    def calculate_data(self):
+        temp = [cell for row in self.maze for cell in row]
+        return Counter(temp)
