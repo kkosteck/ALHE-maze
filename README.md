@@ -21,4 +21,4 @@ python main.py
 - to-do
 ## Wizualizacja - pygame:
 
-![Alt Text](https://github.com/kkosteck/ALHE-maze/blob/pygame_visual/maze.gif)
+![Alt Text](https://github.com/kkosteck/ALHE-maze/blob/main/maze.gif)
