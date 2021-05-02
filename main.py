@@ -1,12 +1,14 @@
 from Maze import *
 from Path import *
+from Visual import *
 
 def main():
     visualisation = True
-    n = 10
-    m = 10
+    n = 100
+    m = 100
     maze = Maze(n, m, visualisation=visualisation)
-    # maze.show()
+    maze.show()
+
 
     start = (1, len(maze.data)-2)
     end = (len(maze.data[0])-2, 1)
