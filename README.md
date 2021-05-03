@@ -19,7 +19,20 @@ python main.py
 - na podstawie wylosowanych krawędzi sprawdzamy, czy dwa wierzchołki należą do tego samego drzewa, jeśli nie to pierwszy wierzchołek zostaje rodzicem drugiego
 - labirynt jest przedstawiony jako tablica dwuwymiarowa
 ## Rozwiązywanie labiryntów - Algorytm A*:
-- to-do
+- labirynt jest przedstawiony jako tablica, gdzie dana liczba odpowiada rodzajowi pola:
+  - 0, biały - puste pole możliwe do przejścia
+  - 1, czarny - ściana niemożliwa do przejścia
+  - 2, zielony - pole już sprawdzone przez algorytm oraz dodane do ścieżki
+  - 3, czerwony - pole czekające w kolejce na sprawdzenie
+  - 4, niebieski - pole ostatecznie znalezionej ścieżki
+- algorytm przeszukuje możliwe do przejścia pola obliczając wartość funkcji celu: funkcja kosztu (dotychczas przebyta odległość) + funkcja heurystyczna
+- W algorytmie zawarte są 3 różne funkcje heurystyczne, które zostają wybrane ręcznie:
+  - odległość sprawdzanego pola do pola docelowego w osi x + w osi y
+  - bezpośrednia odległość sprawdzanego pola do pola docelowego
+  - w zależności od wymiarów labiryntu:
+    - jeśli labirynt jest szerszy to odległość w osi x do pola docelowego
+    - jeśli labirynt jest wyższy to odległość w osi y do pola docelowego
 ## Wizualizacja - pygame:
-
+- labirynt rysowany jest za pomocą prostokątów
+- każda komórka danych reprezentujących labirynt , które są przedstawione jako tablica dwuwymiarowa, jest kwadratem danego koloru
 ![Alt Text](https://github.com/kkosteck/ALHE-maze/blob/main/maze.gif)
