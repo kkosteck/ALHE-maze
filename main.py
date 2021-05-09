@@ -35,25 +35,20 @@ def test_h(n, m, iterations, heuristic=0):
             
             print(chr(27) + "[2J")
 
-def testing():
-    visualisation = False
-    n = 100
-    m = 100
+def testing(n, m, visualisation):
     maze = Maze(n, m, visualisation=visualisation)
     # maze.show()
-
 
     start = (1, len(maze.data)-2)
     end = (len(maze.data[0])-2, 1)
 
     path = Path(maze.data, start, end, visualisation=visualisation)
     path.show()
-    print(path.calculate_data()[4])
 
 def main():
     iterations = 1000
-    test_h(50, 50, iterations)
-    n_bins = int(iterations / 10)
+    for i in range(4):
+        test_h(50, 50, iterations, heuristic=i)
 
 
     # fig, axs = plt.subplots(1,3, tight_layout=True)
@@ -69,4 +64,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    testing(500, 500, True)
+    # main()
