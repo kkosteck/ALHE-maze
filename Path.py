@@ -1,6 +1,8 @@
-from anytree import AnyNode, RenderTree
-from collections import Counter
 import math
+from collections import Counter
+
+from anytree import AnyNode
+
 from Visual import *
 
 class Path:

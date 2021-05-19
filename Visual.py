@@ -1,7 +1,9 @@
-import time
-import math
-import pygame, sys
-from pygame.locals import *
+import time, math, sys
+
+
+from os import environ
+environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
+import pygame
 
 
 LIGHT_GRAY=(224,224,224)
@@ -42,8 +44,8 @@ class Visual:
                     pygame.quit()
                     sys.exit()
             pygame.display.update()
-
-        time.sleep(delay)
+        if delay != 0:
+            time.sleep(delay)
 
     def draw_maze(self, data):
         for i in range(len(data)):
@@ -71,5 +73,5 @@ class Visual:
                     sys.exit()
             pygame.display.update()
             keys=pygame.key.get_pressed()
-            if keys[K_SPACE]:
+            if keys[pygame.K_SPACE]:
                 break

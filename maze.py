@@ -1,5 +1,7 @@
-from anytree import AnyNode
 import random
+
+from anytree import AnyNode
+
 from Visual import *
 
 # Randomized Kruskal's algorithm implementation

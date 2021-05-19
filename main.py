@@ -1,17 +1,23 @@
+import time, random, csv, os
+
+import matplotlib.pyplot as plt
+import numpy as np
+from tqdm import tqdm
+
 from Maze import *
 from Path import *
 from Visual import *
 
-import time
-import random
-import matplotlib.pyplot as plt
-import numpy as np
-import csv
-
-from tqdm import tqdm
+def create_folder(name):
+    parent_dir = os.getcwd()
+    path = os.path.join(parent_dir, name)
+    os.makedirs(path, exist_ok=True) 
 
 def test_h(n, m, iterations, heuristic=0):
+    folder_name = 'results'
+    create_folder(folder_name)
     filename = str(n) + "x" + str(m) + "_" + str(iterations) + "_" + "_" + str(heuristic) + ".csv"
+    filename = os.path.join(folder_name, filename)
     with open(filename, 'w', newline="") as csvfile:
         csvwriter = csv.writer(csvfile, delimiter=";")
 
@@ -66,5 +72,5 @@ def main():
 
 if __name__ == "__main__":
     random.seed(0)
-    testing(10, 10, True)
+    testing(100, 100, True)
     # main()
