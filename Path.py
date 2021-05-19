@@ -62,7 +62,7 @@ class Path:
             if self.n > self.m:
                 return abs(y - self.end[1])
             else:
-                return abs(y - self.end[1])
+                return abs(x - self.end[0])
         return 0 
 
     def __find_min(self, data): # find minimum function value in open list

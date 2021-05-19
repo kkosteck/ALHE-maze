@@ -42,8 +42,8 @@ class Visual:
                     pygame.quit()
                     sys.exit()
             pygame.display.update()
-        if delay != 0:
-            time.sleep(delay)
+
+        time.sleep(delay)
 
     def draw_maze(self, data):
         for i in range(len(data)):

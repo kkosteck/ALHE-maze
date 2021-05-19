@@ -3,6 +3,7 @@ from Path import *
 from Visual import *
 
 import time
+import random
 import matplotlib.pyplot as plt
 import numpy as np
 import csv
@@ -24,14 +25,15 @@ def test_h(n, m, iterations, heuristic=0):
 
             path.maze = maze.data
             path.path = None
-
-            start = time.time()
-            path.search()
-            end = time.time()
+            for i in range(4):
+                path.h_type = i
+                start = time.time()
+                path.search()
+                end = time.time()
 
             data = path.calculate_data()
 
-            csvwriter.writerow([i+1, round((end-start)*1000,2), data[4], round(100 * (data[2]+data[3]) / (data[0]+data[2]+data[3]),2)])
+            csvwriter.writerow([i+1, round((end-start)*1000,2), data[4], round(100 * (data[2]+data[3]+data[4]) / (data[0]+data[2]+data[3]+data[4]),2)])
             
             print(chr(27) + "[2J")
 
@@ -48,7 +50,7 @@ def testing(n, m, visualisation):
 def main():
     iterations = 1000
     for i in range(4):
-        test_h(50, 50, iterations, heuristic=i)
+        test_h(10, 10, iterations, heuristic=i)
 
 
     # fig, axs = plt.subplots(1,3, tight_layout=True)
@@ -62,7 +64,7 @@ def main():
 
 
 
-
 if __name__ == "__main__":
-    testing(500, 500, True)
+    random.seed(0)
+    testing(10, 10, True)
     # main()
