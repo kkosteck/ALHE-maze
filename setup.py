@@ -14,3 +14,5 @@ if __name__ == "__main__":
     install('anytree')
     install('matplotlib')
     install('tqdm')
+    install('pandas')
+    install('plotly')
