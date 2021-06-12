@@ -68,7 +68,7 @@ def make_time_plot(start_size, end_size, iterations):
 
     column_names = ['iteration', 'size', 'time [ms]', 'path length', 'visited tiles [%]']
 
-    fig, axs = plt.subplots(nrows=3, ncols=3, tight_layout=True, figsize=(10, 10))
+    fig, axs = plt.subplots(nrows=4, ncols=3, tight_layout=True, figsize=(10, 10))
     fig.suptitle('Average time [ms], path length and visited tiles [%] for sqare maze from size ' + str(
         start_size) + ' to size ' + str(end_size) + '.')
 
