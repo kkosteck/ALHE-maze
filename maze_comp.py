@@ -55,7 +55,7 @@ def test_size(start_size, end_size, iterations, heuristic, jump):
             avg_path_length /= iterations
             avg_visited_tiles /= iterations
 
-            csvwriter.writerow([size - start_size + 1, size, avg_time, avg_path_length, avg_visited_tiles])
+            csvwriter.writerow([(size - start_size) / jump + 1, size, avg_time, avg_path_length, avg_visited_tiles])
 
         print(chr(27) + "[2J")
 
