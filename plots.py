@@ -1,6 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-import math, time, random, csv, os
+import math, time, random, csv, os, sys
 from tqdm import tqdm
 from Maze import *
 from Path import *
@@ -55,7 +55,7 @@ def make_plots(n, m, iterations):
     column_names = ['time [ms]', 'path length', 'visited tiles [%]']
 
     fig, axs = plt.subplots(nrows=3, ncols=3, tight_layout=True, figsize=(10, 10))
-    fig.suptitle('Data for a ' + str(n) + 'x' + str(m) + ' maze.', fontsize=25)
+    fig.suptitle('Data for a ' + str(n) + 'x' + str(m) + ' maze for ' + str(iterations) + ' iterations.', fontsize=25)
 
     for heuristic in range(3):
         data = pd.read_csv('results/' + str(n) + 'x' + str(m) + '_' + str(iterations) + '__' + str(heuristic) + '.csv')
@@ -84,12 +84,16 @@ def make_plots(n, m, iterations):
     plt.savefig(file_name)
 
 
-def analysis_received_data(n, m, iterations):
+def analysis_received_data(n, m, iterations=1000):
     for i in range(3):
         test_h(n, m, iterations, heuristic=i)
     make_plots(n, m, iterations)
 
 #
-# if __name__ == "__main__":
-#     make_plots(10, 10, 1000)
-#     analysis_received_data(10, 10, 1000)
+if __name__ == "__main__":
+    random.seed(578)
+    if (len(sys.argv) > 3):
+        analysis_received_data(int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3]))
+    elif (len(sys.argv) == 3):
+        analysis_received_data(int(sys.argv[1]), int(sys.argv[2]))
+
