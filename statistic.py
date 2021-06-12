@@ -93,8 +93,8 @@ def analysis_received_data(n, m, iterations=1000):
 #
 if __name__ == "__main__":
     random.seed(578)
-    if (len(sys.argv) > 3):
+    if len(sys.argv) > 3:
         analysis_received_data(int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3]))
-    elif (len(sys.argv) == 3):
+    elif len(sys.argv) == 3:
         analysis_received_data(int(sys.argv[1]), int(sys.argv[2]))
 
