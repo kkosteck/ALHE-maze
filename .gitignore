@@ -7,6 +7,8 @@ __pycache__/
 *.so
 *.csv
 results/
+plots/
+.idea/
 
 # Distribution / packaging
 .Python
