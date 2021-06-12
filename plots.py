@@ -1,6 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-import math, time, random, csv, os, sys
+import math, random, csv, os, sys
+from timeit import default_timer as timer
 from tqdm import tqdm
 from Maze import *
 from Path import *
@@ -33,9 +34,9 @@ def test_h(n, m, iterations, heuristic=0):
             path.path = None
             for j in range(4):
                 path.h_type = j
-                start = time.time()
+                start = timer()
                 path.search()
-                end = time.time()
+                end = timer()
 
             data = path.calculate_data()
 
