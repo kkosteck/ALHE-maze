@@ -55,13 +55,16 @@ def make_plots(n, m, iterations):
 
     column_names = ['time [ms]', 'path length', 'visited tiles [%]']
 
-    fig, axs = plt.subplots(nrows=3, ncols=3, tight_layout=True, figsize=(10, 10))
+    fig, axs = plt.subplots(nrows=4, ncols=3, tight_layout=True, figsize=(10, 10))
     fig.suptitle('Data for a ' + str(n) + 'x' + str(m) + ' maze for ' + str(iterations) + ' iterations.', fontsize=25)
 
-    for heuristic in range(3):
+    for heuristic in range(4):
         data = pd.read_csv('results/' + str(n) + 'x' + str(m) + '_' + str(iterations) + '__' + str(heuristic) + '.csv')
 
-        axs[heuristic, 0].set_ylabel('heuristic ' + str(heuristic), rotation=90, fontsize=15)
+        if heuristic == 3:
+            axs[heuristic, 0].set_ylabel('without heuristic', rotation=90, fontsize=15)
+        else:
+            axs[heuristic, 0].set_ylabel('heuristic ' + str(heuristic), rotation=90, fontsize=15)
 
         for i in range(3):
             axs[heuristic][i].hist(data[column_names[i]], edgecolor='black')
@@ -86,9 +89,10 @@ def make_plots(n, m, iterations):
 
 
 def analysis_received_data(n, m, iterations=1000):
-    for i in range(3):
+    for i in range(4):
         test_h(n, m, iterations, heuristic=i)
     make_plots(n, m, iterations)
+
 
 #
 if __name__ == "__main__":
@@ -97,4 +101,3 @@ if __name__ == "__main__":
         analysis_received_data(int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3]))
     elif len(sys.argv) == 3:
         analysis_received_data(int(sys.argv[1]), int(sys.argv[2]))
-

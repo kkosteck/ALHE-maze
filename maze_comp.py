@@ -72,7 +72,7 @@ def make_time_plot(start_size, end_size, iterations):
     fig.suptitle('Average time [ms], path length and visited tiles [%] for sqare maze from size ' + str(
         start_size) + ' to size ' + str(end_size) + '.')
 
-    for heuristic in range(3):
+    for heuristic in range(4):
         data = pd.read_csv(
             'results/' + str(start_size) + '-' + str(end_size) + '_' + str(iterations) + '__' + str(heuristic) + '.csv')
 
@@ -85,7 +85,7 @@ def make_time_plot(start_size, end_size, iterations):
 
 
 def analysis_average_data(start_size, end_size, iterations=50, jump=1):
-    for heuristic in range(3):
+    for heuristic in range(4):
         test_size(start_size, end_size, iterations, heuristic, jump)
     make_time_plot(start_size, end_size, iterations)
 
